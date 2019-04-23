@@ -29,15 +29,31 @@ const app = async () => {
     if (!connected)
         return;
 
-    tronWeb.trx.getAccount('TD2dPMiQiNeSvBknoTJADYzrt3yEqqonyr').then(accountInfo => {
-        console.group('Account information');
-    console.log('- Address: TD2dPMiQiNeSvBknoTJADYzrt3yEqqonyr');
-    console.log('- Account:\n' + JSON.stringify(accountInfo, null, 2), '\n');
-    console.groupEnd();
-}).catch(err => console.error(err));
+    tronWeb.trx.getContract('TJ73rhE7ACe2DKKY36bz6LumQ1KPGfgG1i').then(contract => {
+        console.group('Contract from node');
+    console.log('- Contract Address: TJ73rhE7ACe2DKKY36bz6LumQ1KPGfgG1i');
+    console.log('- Origin Address:', contract.origin_address);
+    //console.log('- Bytecode:', contract.bytecode);
+    //console.log('- ABI:\n' + JSON.stringify(contract.abi, null, 2), '\n');
 
-    const userBalance = await tronWeb.trx.getBalance('TD2dPMiQiNeSvBknoTJADYzrt3yEqqonyr');
-    console.log(`User's balance is: ${ userBalance }`);
+    console.groupEnd();
+
+    // contract.trx.getStepLottery()((err, {result}) => {
+    //     if (err) return console.error('Failed to bind event listener:', err);
+    //         console.log("!!!!!!!!!!!!!!!", result);
+    //     });
+
+    // contract.getStepLottery(function (error, data) {
+    //     console.log("!!!!!!!!!!!!!!!", data);
+    // });
+
+
+    contract.getStepLottery().watch((err, {result}) => {
+        if (err) return console.error('Failed to bind event listener:', err);
+        console.log(result);
+    });
+
+    }).catch(err => console.error(err));
 
     // const account = await tronWeb.createAccount();
     // const isValid = tronWeb.isAddress(account.address.hex);
@@ -436,6 +452,17 @@ const app = async () => {
         console.log('- Transaction:\n' + JSON.stringify(firstTransaction, null, 2), '\n');
     console.groupEnd();
 */
+
+//     tronWeb.trx.getAccount('TD2dPMiQiNeSvBknoTJADYzrt3yEqqonyr').then(accountInfo => {
+//         console.group('Account information');
+//     console.log('- Address: TD2dPMiQiNeSvBknoTJADYzrt3yEqqonyr');
+//     console.log('- Account:\n' + JSON.stringify(accountInfo, null, 2), '\n');
+//     console.groupEnd();
+// }).catch(err => console.error(err));
+//
+//     const userBalance = await tronWeb.trx.getBalance('TD2dPMiQiNeSvBknoTJADYzrt3yEqqonyr');
+//     console.log(`User's balance is: ${ userBalance }`);
+
 };
 
 app();
